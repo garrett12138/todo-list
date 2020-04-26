@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button, Divider, Alert, Modal } from 'antd';
+import { Button, Divider, Alert, Modal, message } from 'antd';
+import { connect } from 'umi';
+import { addItem, updateItem } from '@/services/todo';
 
 const status = [
   <Alert message="待办" type="info" showIcon={false} />,
@@ -13,75 +15,46 @@ const status = [
 class TodoPage extends Component {
   state = {
     modalVisible: false,
-    todoList: [
-      {
-        id: 8,
-        title: '完成Antd-Pro-Generator手动添加接口并生成代码',
-        status: 0,
-      },
-      {
-        id: 7,
-        title: '修改Antd-Pro-Generator UI',
-        status: 0,
-      },
-      {
-        id: 6,
-        title: '完善Antd-Pro-Generator数据类型定义',
-        status: 0,
-      },
-      {
-        id: 5,
-        title: '文章使用Antd-Pro-Generator生成代码',
-        status: 1,
-      },
-      {
-        id: 4,
-        title: 'Antd-Pro-Generator支持TypeScript',
-        status: 2,
-      },
-      {
-        id: 3,
-        title: '发布Antd-Pro-Generator vscode 插件',
-        status: 1,
-      },
-      {
-        id: 2,
-        title: '文章Ant Design Pro 快速入门',
-        status: 1,
-      },
-      {
-        id: 1,
-        title: '文章React快速入门',
-        status: 1,
-      },
-    ],
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.loadData();
+  }
 
   handelSubmit = async (values) => {
-    const { todoList } = this.state;
-    const item = { id: todoList.length + 1, title: values.title, status: 0 };
-    this.setState({ todoList: [item, ...todoList] });
+    const item = { title: values.title, status: 0 };
+    const rsp = await addItem(item);
+    if (rsp.code === 0) {
+      message.success('添加成功！');
+      this.loadData();
+    } else {
+      message.error(rsp.message);
+    }
   };
+
+  updateStatus = async (item, _status) => {
+    const rsp = await updateItem({ ...item, status: _status });
+    if (rsp.code === 0) {
+      message.success('修改成功！');
+      this.loadData();
+    } else {
+      message.error(rsp.message);
+    }
+  };
+
+  loadData() {
+    const { dispatch } = this.props;
+    dispatch({ type: 'todo/fetchTodoList', payload: null });
+  }
 
   handleModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
 
-  updateStatus(item, _status) {
-    const { todoList } = this.state;
-    for (let i = 0; i < todoList.length; i += 1) {
-      if (todoList[i].id === item.id) {
-        todoList[i].status = _status;
-        break;
-      }
-    }
-    this.setState({ todoList: [...todoList] });
-  }
-
   render() {
-    const { todoList, modalVisible } = this.state;
+    const { todo } = this.props;
+    const { todoList } = todo;
+    const { modalVisible } = this.state;
     const columns = [
       {
         title: 'id',
@@ -182,4 +155,4 @@ class TodoPage extends Component {
   }
 }
 
-export default TodoPage;
+export default connect(({ todo }) => ({ todo }))(TodoPage);
