@@ -50,6 +50,12 @@ export default defineConfig({
               redirect: '/welcome',
             },
             {
+              path: '/todo',
+              name: 'todo',
+              icon: 'unordered-list',
+              component: './todo',
+            },
+            {
               path: '/welcome',
               name: 'welcome',
               icon: 'smile',
