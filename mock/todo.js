@@ -65,7 +65,7 @@ export default {
   },
   'POST /item': (req, res) => {
     const item = { ...req.body, id: list.length + 1 };
-    list = [item, ...item];
+    list = [item, ...list];
     const result = {
       code: 0,
       message: '操作成功',
