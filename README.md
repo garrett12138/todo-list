@@ -32,4 +32,13 @@ git chehckout step-1
 
 step-1 到 step10 分别对应文中的大纲如下
 
-step-1 配置路由 step-2 添加空白页面 step-3 修改国际化资源 step-4 修改空白页面 step-5 添加后端接口访问函数 step-6 添加 mock 代码 step-7 添加 model step-8 修改页面 step-9 修改 mock 逻辑 step-10 修改顶部头像下拉菜单
+- step-1 配置路由 
+- step-2 添加空白页面 
+- step-3 修改国际化资源 
+- step-4 修改空白页面 
+- step-5 添加后端接口访问函数 
+- step-6 添加 mock 代码 
+- step-7 添加 model 
+- step-8 修改页面 
+- step-9 修改 mock 逻辑 
+- step-10 修改顶部头像下拉菜单
